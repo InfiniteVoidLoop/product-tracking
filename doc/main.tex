@@ -1,0 +1,253 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amsthm, amssymb,latexsym,amscd,amsfonts,enumerate}
+\usepackage[top=2.5cm, bottom=2.0cm, left=1.5cm, right=1.5cm]{geometry}
+\usepackage{fancyhdr, graphicx, wrapfig}
+\pagestyle{fancy}
+
+% 1. Setup for 'fancy' page style (standard pages)
+\fancyhf{} 
+\rfoot{Page \thepage} 
+\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\footrulewidth}{1.2pt} 
+
+% 2. Redefine 'plain' style (ToC, Chapter starts)
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \rfoot{Page \thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{1.2pt}
+}
+
+% 3. Redefine 'empty' style (Cover page)
+\fancypagestyle{empty}{%
+  \fancyhf{}
+  \rfoot{Page \thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{1.2pt}
+}
+
+\newcommand{\tab}{\hspace{0.5 cm}}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{scrextend}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\pagestyle{plain}
+\pagestyle{fancy}
+\lhead{\it Major Project Proposal}
+\rhead{\it Computer Vision: Product Tracking}
+\lfoot{\it Group: Do Duy Loi, Trinh Chan Duy \& Dang Vo Hong Phuc}
+\rfoot{Page \thepage}
+
+\fancypagestyle{plain}{%
+  \fancyhf{} 
+  \lhead{\it Major Project Proposal}
+  \rhead{\it Computer Vision: Product Tracking}
+  \lfoot{\it Group: Do Duy Loi, Trinh Chan Duy \& Dang Vo Hong Phuc}
+  \rfoot{Page \thepage}
+  \renewcommand{\headrulewidth}{1.2pt}
+  \renewcommand{\footrulewidth}{1.2pt}
+}
+
+\renewcommand{\headrulewidth}{1.2pt}
+\renewcommand{\footrulewidth}{1.2pt}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{forest}
+\usepackage{mdframed}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{tocloft}
+\usepackage{helvet}
+\usepackage{tabularx}
+\usepackage[unicode, colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref} 
+
+% Redefine Table of Contents behavior
+\makeatletter
+\renewcommand\tableofcontents{%
+    \begin{center}
+      {\Large\bfseries \contentsname} 
+      \par\nobreak
+      \vspace{10pt} 
+    \end{center}
+    \@starttoc{toc}
+}
+\makeatother
+\renewcommand{\familydefault}{\sfdefault}
+
+\begin{document}
+\fontsize{13pt}{18pt}\selectfont
+\setlength{\baselineskip}{18truept}
+
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay,inner sep=0,outer sep=0]
+    \draw[blue!70!black,line width=4pt] ([xshift=-1.5cm,yshift=-2cm]current page.north east) coordinate (A)--([xshift=1.5cm,yshift=-2cm]current page.north west) coordinate(B)--([xshift=1.5cm,yshift=2cm]current page.south west) coordinate (C)--([xshift=-1.5cm,yshift=2cm]current page.south east) coordinate(D)--cycle;
+    \draw ([yshift=0.5cm,xshift=-0.5cm]A)-- ([yshift=0.5cm,xshift=0.5cm]B)--
+    ([yshift=-0.5cm,xshift=0.5cm]B) --([yshift=-0.5cm,xshift=-0.5cm]B)--([yshift=0.5cm,xshift=-0.5cm]C)--([yshift=0.5cm,xshift=0.5cm]C)--([yshift=-0.5cm,xshift=0.5cm]C)-- ([yshift=-0.5cm,xshift=-0.5cm]D)--([yshift=-0.5cm,xshift=-0.5cm]D)--([yshift=0.5cm,xshift=0.5cm]D)--([yshift=-0.5cm,xshift=0.5cm]A)--([yshift=-0.5cm,xshift=-0.5cm]A)--([yshift=0.5cm,xshift=-0.5cm]A);
+    \draw ([yshift=-0.3cm,xshift=0.3cm]A)-- ([yshift=-0.3cm,xshift=-0.3cm]B)--
+    ([yshift=0.3cm,xshift=-0.3cm]B) --([yshift=0.3cm,xshift=0.3cm]B)--([yshift=-0.3cm,xshift=0.3cm]C)--([yshift=-0.3cm,xshift=-0.3cm]C)--([yshift=0.3cm,xshift=-0.3cm]C)-- ([yshift=0.3cm,xshift=0.3cm]D)--([yshift=-0.3cm,xshift=0.3cm]D)--([yshift=-0.3cm,xshift=-0.3cm]D)--([yshift=0.3cm,xshift=-0.3cm]A)--([yshift=0.3cm,xshift=0.3cm]A)--([yshift=-0.3cm,xshift=0.3cm]A);
+\end{tikzpicture}
+\begin{center}
+{\large\bf UNIVERSITY OF SCIENCE}\\
+{---------------------o0o--------------------}\\
+\vskip 1cm
+{\bf ACADEMIC COURSE REPORT\\ MAJOR PROJECT PROPOSAL}\\[0.5 cm]
+\rule{\linewidth}{0.5 mm} \\[0.2 cm]
+{\Large\bf \textbf{PRODUCT DETECTION AND TRACKING\\ ON MANUFACTURING CONVEYOR BELTS}}\\
+\rule{\linewidth}{0.5 mm} \\
+\vskip 1.5cm
+\includegraphics[scale=0.25]{format/logohcmus.jpg}\\[1cm] 
+\begin{minipage}{0.45\textwidth}
+\begin{flushleft} \large
+\emph{{\bf Group Members:}}\\
+{\bf Do Duy Loi}\\ 
+{\bf Trinh Chan Duy}\\
+{\bf Dang Vo Hong Phuc}
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{{\bf Student ID:}} \\
+{\bf 23120293}\\
+{\bf 23120419}\\
+{\bf 23120155}
+\end{flushright}
+\end{minipage}\\
+\vfill
+{\bf Ho Chi Minh City, April 2026}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\chapter{Project Team Information}
+\renewcommand{\arraystretch}{1.2}
+
+\section{Members}
+\begin{center}
+\begin{tabularx}{\textwidth}{l c X}
+\toprule
+\textbf{Full Name} & \textbf{Student ID}  \\ 
+\midrule
+Do Duy Loi & 23120293  \\
+Trinh Chan Duy   & 23120419  \\ 
+Dang Vo Hong Phuc   & 23120155  \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Project Title}
+\textbf{Computer Vision System for Automated Product Detection, Tracking, and Monitoring on Manufacturing Conveyor Belts.}
+
+\chapter{Project Overview}
+
+\section{Research Motivation}
+In the era of Industry 4.0, automating production processes is critical for maintaining corporate competitiveness. Monitoring product flow on conveyor belts is a vital stage in this automation. Currently, many factories still rely on manual labor for counting and inspection, leading to fatigue-induced errors, slow processing speeds, and high operational costs.
+
+There is a practical demand for a system capable of 24/7 operation with high precision to:
+\begin{itemize}
+    \item Automate the counting of output products.
+    \item Monitor flow to detect early-stage blockages or misaligned items.
+    \item Collect operational data to optimize assembly line efficiency.
+\end{itemize}
+
+\section{Problem Statement}
+\begin{itemize}
+    \item \textbf{Input:} Real-time video stream from industrial cameras mounted above the conveyor belt, observing products such as bottles, cartons, or mechanical parts.
+    \item \textbf{Output:} 
+    \begin{itemize}
+        \item Bounding boxes identifying the location of each product.
+        \item Unique IDs assigned to each product via multi-object tracking.
+        \item Trajectories and status indicators (Normal/Defective).
+        \item Statistical reports on total product throughput within specific timeframes.
+    \end{itemize}
+\end{itemize}
+\newpage
+\section{Scientific and Practical Significance}
+\begin{itemize}
+    \item \textbf{Scientific Significance:} This project evaluates the performance of state-of-the-art Deep Learning architectures (YOLO) combined with data filtering algorithms (Kalman Filter, Re-ID) in specific industrial environments. It explores model optimization to achieve a balance between accuracy and real-time processing speed.
+    \item \textbf{Practical Significance:} It minimizes human error, increases assembly line productivity by 20-30\%, provides accurate digital data for Manufacturing Execution Systems (MES/ERP), and serves as a foundation for automated Quality Assurance (QA/QC).
+\end{itemize}
+
+\section{Challenges and Scope}
+\subsection{Technical Challenges}
+\begin{itemize}
+    \item \textbf{Conveyor Speed:} High-speed movement can cause motion blur.
+    \item \textbf{Environmental Variance:} Unstable factory lighting and industrial dust accumulation on lenses.
+    \item \textbf{Product Similarity:} Identical appearance of products makes unique ID assignment difficult during occlusion.
+    \item \textbf{Product Density:} Crowded or overlapping items can confuse detection models.
+\end{itemize}
+
+\subsection{Project Scope}
+\begin{itemize}
+    \item \textbf{Datasets:} Standard benchmarks including MVTec D2S (instance segmentation), MVTec AD (anomaly detection), and custom data collected via Roboflow.
+    \item \textbf{Methodology:} Focus on YOLOv8/v11 for detection and ByteTrack or Deep SORT for tracking, deployed on GPU-accelerated hardware.
+\end{itemize}
+
+\chapter{Related Research}
+
+\section{Practical Application Studies}
+Rather than focusing solely on theoretical algorithms, this project examines two real-world application systems with contexts highly relevant to industrial requirements:
+
+\subsection{Product Quality Inspection and Counting System (MDPI, 2024)}
+The research \textbf{"Computer-Vision-Based Product Quality Inspection and Novel Counting System"} presents a computer vision system deployed on an actual production line. 
+\begin{itemize}
+    \item \textbf{Application:} The system performs dual tasks: counting products and detecting surface defects by combining \textbf{YOLOv8 Pose} and \textbf{difference image} techniques.
+    \item \textbf{Results:} Achieved \textbf{99.2\% accuracy} for products over 1kg by integrating visual data with weight sensors, operating stably at a camera frame rate of 120 FPS.
+    \item \textbf{Reference:} \textit{Applied Sciences, MDPI (2024).}
+\end{itemize}
+
+\subsection{Zone-Based Product Counting System (ResearchGate, 2026)}
+The study \textbf{"Real-Time Object Counting on Industrial Conveyor Belts Using YOLOv11 and Zone-Based Algorithm"} proposes a solution for conveyor belts with high object density.
+\begin{itemize}
+    \item \textbf{Application:} Utilizes the \textbf{YOLOv11} model combined with a \textbf{Three-zone counting} algorithm. Instead of traditional line-crossing logic, the system tracks object transitions through three defined spatial zones.
+    \item \textbf{Results:} Effectively resolved the "double-counting" phenomenon and achieved \textbf{94.2\% accuracy} even under 50-70\% occlusion.
+    \item \textbf{Reference:} \textit{ResearchGate (2026).}
+\end{itemize}
+
+\subsection{Comparative Analysis of Applied Research}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{|p{3.5cm}|X|X|}
+\hline
+\textbf{Research Work} & \textbf{Pros} & \textbf{Cons} \\ \hline
+\textbf{MDPI System (2024)} & Extremely high accuracy (99.2\%); Multi-tasking (counting + defects); Stability through weight sensor fusion. & Requires complex hardware (120 FPS cameras, load cells); Sensitive to sudden lighting changes due to difference imaging. \\ \hline
+\textbf{ResearchGate (2026)} & Handles high occlusion (50-70\%); Eliminates double-counting; YOLOv11 optimized for inference speed. & Requires precise spatial calibration; Performance depends on the stability of tracking within the central zone. \\ \hline
+\end{tabularx}
+\end{center}
+
+\chapter{Proposed Approach}
+
+\section{Identified Problems Post-Survey}
+Based on the practical research surveyed above, the team has identified two core problems to resolve for system optimization:
+\begin{enumerate}
+    \item \textbf{Double-Counting and Omissions:} Traditional line-crossing algorithms are prone to errors when objects move inconsistently or when "flickering" occurs between frames due to environmental lighting.
+    \item \textbf{System Latency and ID Switches:} Running complex Deep Learning models on high-speed lines causes inference latency, leading to deviations in the Kalman filter's predicted positions and subsequent ID swaps.
+\end{enumerate}
+
+\section{Proposed Solutions and Improvements}
+To overcome the aforementioned drawbacks, the following specific improvements are proposed:
+\begin{itemize}
+    \item \textbf{Tracking Optimization (Inspired by YOLOv11):} Implement a \textbf{Virtual Counting Zones} logic. Instead of a single tripwire, the system will establish \textit{Entry}, \textit{Tracking}, and \textit{Exit} zones. A product is only logged into the database once it has successfully navigated all three zones in the correct temporal sequence.
+    \item \textbf{Speed Optimization (Inspired by MDPI):} Utilize the \textbf{TensorRT} toolkit to optimize YOLO networks, allowing the system to maintain processing speeds above 60 FPS on Edge AI devices (e.g., Jetson Nano), ensuring trajectory continuity.
+    \item \textbf{Multi-Task Defect Inspection:} Leverage data from the tracking phase to extract product images at the optimal viewpoint, then apply a lightweight classifier to detect shape abnormalities (dents, deformities) or label defects.
+\end{itemize}
+
+\chapter*{References}
+\addcontentsline{toc}{chapter}{References}
+\begin{enumerate}
+    \item Jocher, G., et al. (2023). \textit{YOLOv8 by Ultralytics}. \url{https://github.com/ultralytics/ultralytics}.
+    \item Zhang, Y., et al. (2022). \textit{ByteTrack: Multi-Object Tracking by Associating Every Detection Box}. In ECCV.
+    \item Wojke, N., et al. (2017). \textit{Simple Online and Realtime Tracking with a Deep Association Metric}. In ICIP.
+    \item MVTec Software GmbH. \textit{D2S Dataset for Instance Segmentation}. \url{https://www.mvtec.com/company/research/datasets/d2s/}.
+    \item Bergmann, P., et al. (2019). \textit{MVTec AD Dataset for Anomaly Detection}. In CVPR.
+\end{enumerate}
+
+\end{document}
