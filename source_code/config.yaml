@@ -60,7 +60,7 @@ classifier:
   input_size: 224          # Classifier input resolution
   defect_threshold: 0.55   # Probability threshold to flag as "Defective"
   num_classes: 2           # 0: Normal, 1: Defective
-  simulate: true           # true = random prediction (for demo without real weights)
+  simulate: false           # true = random prediction (for demo without real weights)
 
 # ---------------------------------------------------------------------------
 # Database (SQLite)

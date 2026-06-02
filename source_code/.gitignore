@@ -58,9 +58,9 @@ data/conveyor_dataset/raw/labels/
 data/*.db
 data/*.mp4
 
-# --- Demo videos (large) ---
-demo/*.mp4
-demo/*.avi
+# # --- Demo videos (large) ---
+# demo/*.mp4
+# demo/*.avi
 
 # --- Output / generated files ---
 data/output_annotated.mp4
