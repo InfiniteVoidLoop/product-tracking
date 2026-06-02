@@ -19,7 +19,7 @@ source:
 # Object Detection (YOLO)
 # ---------------------------------------------------------------------------
 detection:
-  model_path: "models/detection/conveyor_best.pt"  # Path to .pt, .onnx, or .engine
+  model_path: "../runs/detect/conveyor_belt/weights/best.pt"  # Path to .pt, .onnx, or .engine
   imgsz: 640               # Inference image size
   conf_threshold: 0.35     # Minimum detection confidence
   iou_threshold: 0.45      # NMS IoU threshold
@@ -43,7 +43,7 @@ tracking:
 # Axis: use "x" for horizontal conveyor, "y" for vertical conveyor
 # ---------------------------------------------------------------------------
 counting:
-  axis: "x"                # "x" (horizontal) or "y" (vertical) conveyor direction
+  axis: "y"                # "x" (horizontal) or "y" (vertical) conveyor direction
   zone_start: 0.20         # Entry zone end / Tracking zone start (fraction along axis)
   zone_end: 0.80           # Tracking zone end / Exit zone start (fraction along axis)
   count_cache_size: 200    # Number of recently counted IDs to cache (anti-double-count)

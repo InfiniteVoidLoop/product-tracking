@@ -103,7 +103,7 @@ The `data/conveyor_dataset/` folder is already structured and ready to use.
 python scripts/train_detector.py \
     --data  data/conveyor_dataset/data.yaml \
     --model yolov8s.pt \
-    --epochs 100 \
+    --epochs 20 \
     --batch  16 \
     --device 0
 ```
@@ -141,7 +141,7 @@ data/classifier/
 ```bash
 python scripts/train_classifier.py \
     --data-dir data/classifier \
-    --epochs   30 \
+    --epochs   10 \
     --batch    32
 ```
 
