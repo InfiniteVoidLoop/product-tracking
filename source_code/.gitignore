@@ -1,0 +1,93 @@
+# =============================================================================
+# Conveyor Belt CV System — .gitignore
+# =============================================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+wheels/
+
+# --- Virtual Environment ---
+venv/
+env/
+.venv/
+.env/
+ENV/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.ipynb
+
+# --- Model Weights (large binaries — store with Git LFS or externally) ---
+*.pt
+*.pth
+*.onnx
+*.engine
+*.trt
+*.pb
+*.caffemodel
+models/classification/
+runs/
+
+# --- Dataset (too large for git) ---
+data/train/
+data/val/
+data/test/
+data/subset/
+data/conveyor_dataset/train/
+data/conveyor_dataset/val/
+data/conveyor_dataset/test/
+data/conveyor_dataset/raw/images/
+data/conveyor_dataset/raw/labels/
+data/*.db
+data/*.mp4
+
+# --- Demo videos (large) ---
+demo/*.mp4
+demo/*.avi
+
+# --- Output / generated files ---
+data/output_annotated.mp4
+data/conveyor.db
+*.log
+wget-log
+
+# --- OS ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- IDE ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.cursor/
+
+# --- Streamlit ---
+.streamlit/
+
+# --- Ultralytics / YOLO cache ---
+*.cache
+data/subset/

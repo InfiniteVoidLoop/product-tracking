@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------
 source:
   type: "file"             # "file" | "webcam" | "rtsp"
-  path: "demo/demo_conveyor.mp4"   # Path to video file (if type == "file")
+  path: "demo/demo-conveyor.mp4"   # Path to video file (if type == "file")
   webcam_index: 0          # Webcam device index (if type == "webcam")
   rtsp_url: ""             # RTSP stream URL (if type == "rtsp")
   width: 1280              # Desired frame width (resize if needed)

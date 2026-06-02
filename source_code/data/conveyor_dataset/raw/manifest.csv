@@ -1,0 +1,10 @@
+image,label,source_video,frame_index,timestamp_sec,objects,detector_classes
+images/conveyor_video_f000015.jpg,labels/conveyor_video_f000015.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,15,0.500,1,scissors
+images/conveyor_video_f000030.jpg,labels/conveyor_video_f000030.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,30,1.000,1,scissors
+images/conveyor_video_f000045.jpg,labels/conveyor_video_f000045.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,45,1.500,1,scissors
+images/conveyor_video_f000060.jpg,labels/conveyor_video_f000060.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,60,2.000,1,scissors
+images/conveyor_video_f000075.jpg,labels/conveyor_video_f000075.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,75,2.500,1,scissors
+images/conveyor_video_f000090.jpg,labels/conveyor_video_f000090.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,90,3.000,1,scissors
+images/conveyor_video_f000105.jpg,labels/conveyor_video_f000105.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,105,3.500,1,scissors
+images/conveyor_video_f000120.jpg,labels/conveyor_video_f000120.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,120,4.000,1,scissors
+images/conveyor_video_f000135.jpg,labels/conveyor_video_f000135.txt,/home/phuc/Documents/CV/source_code/data/conveyor_video.mp4,135,4.500,1,scissors
