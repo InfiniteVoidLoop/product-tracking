@@ -24,7 +24,7 @@ detection:
   conf_threshold: 0.35     # Minimum detection confidence
   iou_threshold: 0.45      # NMS IoU threshold
   device: ""               # "" = auto (cuda if available, else cpu), "cpu", "cuda:0"
-  classes: null            # null = all classes, or list like [0, 1] to filter
+  classes: [0]             # [0] to strictly include only the desired product class IDs
 
 # ---------------------------------------------------------------------------
 # Multi-Object Tracking (ByteTrack)

@@ -127,11 +127,10 @@ class Detector:
         self._classes_filter = classes
 
         if not model_path.exists():
-            print(
-                f"[Detector] Warning: model file not found at '{model_path}'. "
-                "Will auto-download yolov8s.pt when first inference is called."
+            raise FileNotFoundError(
+                f"[Detector] Error: model file not found at '{model_path}'. "
+                "Please ensure the correct weights file is deployed."
             )
-            model_path = Path("yolov8s.pt")
 
         suffix = model_path.suffix.lower()
 

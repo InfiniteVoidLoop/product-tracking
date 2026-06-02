@@ -6,7 +6,7 @@ Pure-Python ByteTrack-style Multi-Object Tracker for the Conveyor Belt CV System
 Design goals:
   - No hard dependency on any external tracker library (only numpy + scipy).
   - Implements the two-stage high/low confidence matching strategy of ByteTrack.
-  - Kalman Filter state: [cx, cy, aspect_ratio, height, vx, vy, va, vh].
+    - Kalman Filter state: [cx, cy, width, height, vx, vy, vw, vh].
   - Returns ``Track`` objects consumed directly by counting.py.
 
 References:
@@ -46,8 +46,8 @@ class KalmanFilter:
     """
     Kalman Filter modelling object motion as constant velocity in 2-D space.
 
-    State vector:  x = [cx, cy, a, h, vx, vy, va, vh]^T
-    Measurement:   z = [cx, cy, a, h]^T
+    State vector:  x = [cx, cy, w, h, vx, vy, vw, vh]^T
+    Measurement:   z = [cx, cy, w, h]^T
     """
 
     ndim = 4           # measurement dims
@@ -70,22 +70,22 @@ class KalmanFilter:
         """Process noise covariance."""
         p = self._std_weight_position * height
         v = self._std_weight_velocity * height
-        stds = [p, p, 1e-2, p, v, v, 1e-5, v]
+        stds = [p, p, 2 * p, 2 * p, v, v, 2 * v, 2 * v]
         return np.diag(np.square(stds, dtype=np.float32))
 
     def _R(self, height: float) -> np.ndarray:
         """Measurement noise covariance."""
         p = self._std_weight_position * height
-        stds = [p, p, 1e-1, p]
+        stds = [p, p, p, p]
         return np.diag(np.square(stds, dtype=np.float32))
 
     def initiate(self, measurement: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-        """Initialise a new track from a measurement [cx, cy, a, h]."""
+        """Initialise a new track from a measurement [cx, cy, w, h]."""
         mean = np.r_[measurement, np.zeros(self.ndim, dtype=np.float32)]
         h = measurement[3]
         p = self._std_weight_position * h
         v = self._std_weight_velocity * h
-        stds = [2 * p, 2 * p, 1e-2, 2 * p, 10 * v, 10 * v, 1e-5, 10 * v]
+        stds = [2 * p, 2 * p, 2 * p, 2 * p, 10 * v, 10 * v, 10 * v, 10 * v]
         covariance = np.diag(np.square(stds, dtype=np.float32))
         return mean.astype(np.float32), covariance
 
@@ -246,13 +246,11 @@ def _xyxy_to_xywh(bbox: List[float]) -> np.ndarray:
     cy = (y1 + y2) / 2.0
     w = x2 - x1
     h = y2 - y1
-    a = w / max(h, 1e-6)
-    return np.array([cx, cy, a, h], dtype=np.float32)
+    return np.array([cx, cy, w, h], dtype=np.float32)
 
 
 def _xywh_to_xyxy(xywh: np.ndarray) -> List[float]:
-    cx, cy, a, h = xywh[:4]
-    w = a * h
+    cx, cy, w, h = xywh[:4]
     return [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2]
 
 

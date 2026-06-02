@@ -78,7 +78,8 @@ def extract_frames_from_video(
         frame_indices = [0]
     else:
         frame_indices = [
-            round(i * (total_frames - 1) / (samples - 1)) for i in range(samples)
+            round(i * (total_frames - 1) / (samples - 1))
+            for i in range(samples)
         ]
 
     saved = 0
@@ -163,39 +164,20 @@ def split_dataset(
 
 def main():
     parser = argparse.ArgumentParser(description="Prepare YOLO dataset")
-    parser.add_argument(
-        "--source", default="data/raw", help="Source folder with images/ and labels/"
-    )
-    parser.add_argument(
-        "--output",
-        default="data",
-        help="Output base folder (train/val/test will be created here)",
-    )
-    parser.add_argument(
-        "--class-names",
-        nargs="+",
-        default=["product"],
-        help="Space-separated list of class names (in class ID order)",
-    )
-    parser.add_argument(
-        "--extract-frames",
-        type=int,
-        default=0,
-        help="If --source is a video, evenly extract this many frames first",
-    )
-    parser.add_argument(
-        "--augment",
-        action="store_true",
-        help="Apply offline Albumentations augmentation to training set",
-    )
-    parser.add_argument(
-        "--multiplier",
-        type=int,
-        default=5,
-        help="Number of augmented copies per original image",
-    )
-    parser.add_argument("--train-ratio", type=float, default=0.70)
-    parser.add_argument("--val-ratio", type=float, default=0.20)
+    parser.add_argument("--source",       default="data/raw",
+                        help="Source folder with images/ and labels/")
+    parser.add_argument("--output",       default="data",
+                        help="Output base folder (train/val/test will be created here)")
+    parser.add_argument("--class-names",  nargs="+", default=["product"],
+                        help="Space-separated list of class names (in class ID order)")
+    parser.add_argument("--extract-frames", type=int, default=0,
+                        help="If --source is a video, evenly extract this many frames first")
+    parser.add_argument("--augment",      action="store_true",
+                        help="Apply offline Albumentations augmentation to training set")
+    parser.add_argument("--multiplier",   type=int, default=5,
+                        help="Number of augmented copies per original image")
+    parser.add_argument("--train-ratio",  type=float, default=0.70)
+    parser.add_argument("--val-ratio",    type=float, default=0.20)
     args = parser.parse_args()
 
     source_dir = ROOT / args.source
@@ -211,9 +193,7 @@ def main():
         extract_frames_from_video(source_dir, raw_dir, args.extract_frames)
         source_dir = raw_dir
     elif args.extract_frames:
-        print(
-            "[ERROR] --extract-frames can only be used when --source is a video file."
-        )
+        print("[ERROR] --extract-frames can only be used when --source is a video file.")
         sys.exit(1)
 
     # Step 2: split

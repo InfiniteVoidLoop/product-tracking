@@ -1,0 +1,15 @@
+{
+    "video": "conveyor_video.mp4",
+    "total_count": 9,
+    "frames": {
+        "15": {"objects": [{"id": 1, "class": "product"}]},
+        "30": {"objects": [{"id": 1, "class": "product"}]},
+        "45": {"objects": [{"id": 1, "class": "product"}]},
+        "60": {"objects": [{"id": 1, "class": "product"}]},
+        "75": {"objects": [{"id": 1, "class": "product"}]},
+        "90": {"objects": [{"id": 1, "class": "product"}]},
+        "105": {"objects": [{"id": 1, "class": "product"}]},
+        "120": {"objects": [{"id": 1, "class": "product"}]},
+        "135": {"objects": [{"id": 1, "class": "product"}]}
+    }
+}

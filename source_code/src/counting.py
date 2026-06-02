@@ -267,9 +267,9 @@ class ZoneCounter:
         delta = coord - rec.first_seen_coord
         if self.config.direction == "positive":
             # Should be moving toward higher coordinate values
-            return delta >= -0.10  # allow small backward jitter
+            return delta >= -0.25  # allow larger backward jitter due to rotation
         else:
-            return delta <= 0.10
+            return delta <= 0.25
 
     def _extract_crop(
         self, frame: np.ndarray, track: Track, W: int, H: int
