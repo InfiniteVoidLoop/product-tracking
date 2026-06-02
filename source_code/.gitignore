@@ -46,6 +46,7 @@ models/classification/
 runs/
 
 # --- Dataset (too large for git) ---
+data/my_new_dataset/
 data/train/
 data/val/
 data/test/
