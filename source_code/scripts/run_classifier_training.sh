@@ -23,7 +23,7 @@ echo "Training for 30 epochs with batch size 32..."
 python scripts/train_classifier.py \
   --data-dir data/classification \
   --epochs 30 \
-  --batch 8 \
+  --batch 32 \
   --lr 0.001
 
 echo "================================================="

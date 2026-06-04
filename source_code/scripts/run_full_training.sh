@@ -24,12 +24,15 @@ echo "========================================"
 # If you get a CUDA Out of Memory error, lower the --batch argument.
 python scripts/train_detector.py \
   --data data/detection/data.yaml \
-  --epochs 20 \
-  --batch 8
+  --epochs 150 \
+  --batch 16
 
 echo "========================================"
 echo " Training Complete! "
 echo "========================================"
-echo "Don't forget to update config.yaml with your new best weights:"
-echo "  detection:"
-echo "    model_path: \"runs/detect/conveyor_belt/weights/best.pt\""
+
+# Automatically move the new weights to the models folder so config.yaml doesn't need to change
+echo "Copying new weights to models/detection/conveyor_best.pt..."
+cp runs/detect/conveyor_belt/weights/best.pt models/detection/conveyor_best.pt
+
+echo "Done! You can now run the demo."
