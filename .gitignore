@@ -1,0 +1,6 @@
+# Generated training/evaluation outputs
+/runs/
+
+# Python cache
+__pycache__/
+*.py[cod]

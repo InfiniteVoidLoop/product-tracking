@@ -52,6 +52,15 @@ def load_config(path: str | Path) -> dict:
         return yaml.safe_load(f)
 
 
+def resolve_project_path(path: str | Path | None) -> Path | None:
+    """Resolve local config paths from source_code/, independent of shell cwd."""
+    if path in (None, ""):
+        return None
+
+    path = Path(path).expanduser()
+    return path if path.is_absolute() else ROOT / path
+
+
 class FPSCounter:
     """Rolling-window FPS counter."""
 
@@ -113,12 +122,12 @@ class ConveyorApp:
         zone_cfg_raw = config.get("counting", {})
         self._zone_counter = ZoneCounter(ZoneCounterConfig(**zone_cfg_raw))
         self._classifier = DefectClassifier(
-            weights_path=config.get("classifier", {}).get("model_path"),
+            weights_path=resolve_project_path(config.get("classifier", {}).get("model_path")),
             input_size=config.get("classifier", {}).get("input_size", 224),
             defect_threshold=config.get("classifier", {}).get("defect_threshold", 0.55),
             simulate=config.get("classifier", {}).get("simulate", True),
         )
-        self._db = Database(config.get("database", {}).get("path", "data/conveyor.db"))
+        self._db = Database(resolve_project_path(config.get("database", {}).get("path", "data/conveyor.db")))
 
     # ------------------------------------------------------------------
     # Thread: Capture
@@ -136,7 +145,7 @@ class ConveyorApp:
         elif src_type == "rtsp":
             source = src_cfg.get("rtsp_url", "")
         else:
-            source = src_cfg.get("path", "demo/demo_conveyor.mp4")
+            source = resolve_project_path(src_cfg.get("path", "demo/demo_conveyor.mp4"))
 
         fps_cap = src_cfg.get("fps_cap", 60)
         vs = VideoSource(source, width=W, height=H, fps_cap=fps_cap)
@@ -170,8 +179,9 @@ class ConveyorApp:
     def _processing_thread(self):
         """Detect + track + count → result_queue + crop_queue."""
         det_cfg = self.cfg.get("detection", {})
+        model_path = resolve_project_path(det_cfg.get("model_path", "yolov8s.pt"))
         self._detector.load(
-            model_path=det_cfg.get("model_path", "yolov8s.pt"),
+            model_path=model_path or "yolov8s.pt",
             device=det_cfg.get("device", ""),
             conf=det_cfg.get("conf_threshold", 0.35),
             iou=det_cfg.get("iou_threshold", 0.45),
@@ -349,7 +359,7 @@ class ConveyorApp:
         writer: Optional[VideoWriter] = None
         if record:
             app_cfg = self.cfg.get("app", {})
-            out_path = app_cfg.get("output_path", "data/output_annotated.mp4")
+            out_path = resolve_project_path(app_cfg.get("output_path", "data/output_annotated.mp4"))
             W = self.cfg.get("source", {}).get("width", 1280)
             H = self.cfg.get("source", {}).get("height", 720)
             writer = VideoWriter(out_path, fps=30.0, frame_size=(W, H)).open()
@@ -451,6 +461,8 @@ def main():
 
     config_path = Path(args.config)
     if not config_path.exists():
+        config_path = resolve_project_path(args.config)
+    if not config_path.exists():
         print(f"[ERROR] Config not found: {config_path}")
         sys.exit(1)
 
@@ -468,7 +480,7 @@ def main():
                 config["source"]["rtsp_url"] = args.source
             else:
                 config["source"]["type"] = "file"
-                config["source"]["path"] = args.source
+                config["source"]["path"] = str(resolve_project_path(args.source))
 
     if args.conf is not None:
         config.setdefault("detection", {})["conf_threshold"] = args.conf

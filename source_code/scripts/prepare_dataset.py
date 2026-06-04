@@ -30,6 +30,13 @@ ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
 VIDEO_SUFFIXES = {".mp4", ".avi", ".mov", ".mkv", ".webm", ".m4v"}
+IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+
+
+def resolve_under_root(path: str | Path) -> Path:
+    """Resolve project-local paths from source_code/, independent of shell cwd."""
+    path = Path(path).expanduser()
+    return path if path.is_absolute() else ROOT / path
 
 
 def extract_frames_from_video(
@@ -120,21 +127,40 @@ def split_dataset(
     # test gets the remainder
 ):
     """
-    Split a flat images/ + labels/ folder into train/val/test splits.
+    Split a source folder into train/val/test splits.
+
+    Supports either:
+      - YOLO format: source/images + source/labels
+      - image-only format: source contains images directly or in subfolders
+
+    For image-only sources, each image is labelled as one full-frame product.
+    That matches object-centric datasets such as ABO product images.
     """
     import random
 
-    img_dir = source_dir / "images"
-    lbl_dir = source_dir / "labels"
+    yolo_img_dir = source_dir / "images"
+    yolo_lbl_dir = source_dir / "labels"
+    has_yolo_layout = yolo_img_dir.exists()
+
+    img_dir = yolo_img_dir if has_yolo_layout else source_dir
+    lbl_dir = yolo_lbl_dir if has_yolo_layout else None
 
     if not img_dir.exists():
-        print(f"[ERROR] Expected {img_dir} to exist.")
+        print(f"[ERROR] Source folder does not exist: {img_dir}")
         sys.exit(1)
 
-    imgs = sorted(img_dir.glob("*.jpg")) + sorted(img_dir.glob("*.png"))
+    imgs = sorted(
+        path for path in img_dir.rglob("*")
+        if path.is_file() and path.suffix.lower() in IMAGE_SUFFIXES
+    )
     if not imgs:
         print(f"[ERROR] No images found in {img_dir}")
         sys.exit(1)
+
+    if lbl_dir is None:
+        print("  No labels/ folder found; creating full-frame YOLO labels.")
+    elif not lbl_dir.exists():
+        print(f"  No labels folder found at {lbl_dir}; creating empty labels.")
 
     random.shuffle(imgs)
     n = len(imgs)
@@ -154,10 +180,25 @@ def split_dataset(
         lbl_out.mkdir(parents=True, exist_ok=True)
 
         for img_path in split_imgs:
-            shutil.copy2(img_path, img_out / img_path.name)
-            lbl_path = lbl_dir / img_path.with_suffix(".txt").name
-            if lbl_path.exists():
-                shutil.copy2(lbl_path, lbl_out / lbl_path.name)
+            rel_path = img_path.relative_to(img_dir)
+            safe_stem = "_".join(rel_path.with_suffix("").parts)
+            image_name = f"{safe_stem}{img_path.suffix.lower()}"
+            label_name = f"{safe_stem}.txt"
+
+            shutil.copy2(img_path, img_out / image_name)
+
+            if lbl_dir and lbl_dir.exists():
+                lbl_path = lbl_dir / rel_path.with_suffix(".txt")
+                if not lbl_path.exists():
+                    lbl_path = lbl_dir / img_path.with_suffix(".txt").name
+                if lbl_path.exists():
+                    shutil.copy2(lbl_path, lbl_out / label_name)
+                else:
+                    (lbl_out / label_name).touch()
+            elif lbl_dir is None:
+                (lbl_out / label_name).write_text("0 0.5 0.5 1.0 1.0\n")
+            else:
+                (lbl_out / label_name).touch()
 
         print(f"  {split:5s}: {len(split_imgs)} images → {img_out}")
 
@@ -180,8 +221,8 @@ def main():
     parser.add_argument("--val-ratio",    type=float, default=0.20)
     args = parser.parse_args()
 
-    source_dir = ROOT / args.source
-    output_dir = ROOT / args.output
+    source_dir = resolve_under_root(args.source)
+    output_dir = resolve_under_root(args.output)
 
     print(f"[PrepareDataset] Source : {source_dir}")
     print(f"[PrepareDataset] Output : {output_dir}")

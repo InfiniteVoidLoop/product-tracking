@@ -19,6 +19,7 @@ Prerequisites:
 from __future__ import annotations
 
 import argparse
+import tempfile
 import sys
 from pathlib import Path
 
@@ -26,6 +27,42 @@ import yaml
 
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
+
+
+def resolve_under_root(path: str | Path) -> Path:
+    """Resolve project-local paths from source_code/, independent of shell cwd."""
+    path = Path(path).expanduser()
+    return path if path.is_absolute() else ROOT / path
+
+
+def build_training_data_yaml(data_path: Path) -> Path:
+    """
+    Create a temporary YOLO data.yaml with an absolute dataset root.
+
+    Ultralytics has changed relative path handling across versions, so this
+    avoids accidental output/path dependence on the launch directory.
+    """
+    with open(data_path) as f:
+        data_cfg = yaml.safe_load(f)
+
+    dataset_root = Path(data_cfg.get("path", data_path.parent)).expanduser()
+    if not dataset_root.is_absolute():
+        root_relative = ROOT / dataset_root
+        yaml_relative = data_path.parent / dataset_root
+        dataset_root = root_relative if root_relative.exists() else yaml_relative
+
+    data_cfg["path"] = str(dataset_root.resolve())
+
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w",
+        suffix=".yaml",
+        prefix="yolo_data_",
+        delete=False,
+    )
+    with tmp:
+        yaml.safe_dump(data_cfg, tmp, sort_keys=False)
+
+    return Path(tmp.name)
 
 
 def main():
@@ -51,15 +88,15 @@ def main():
 
     # CLI overrides
     model   = args.model   or train_cfg.get("model",    "yolov8s.pt")
-    data    = args.data    or str(ROOT / train_cfg.get("data_yaml", "data/data.yaml"))
+    data    = resolve_under_root(args.data or train_cfg.get("data_yaml", "data/data.yaml"))
     epochs  = args.epochs  or train_cfg.get("epochs",   150)
     device  = args.device  or train_cfg.get("device",   "")
     batch   = args.batch   or train_cfg.get("batch",    16)
     imgsz   = train_cfg.get("imgsz",          640)
-    project = train_cfg.get("project",         "runs/detect")
+    project = resolve_under_root(train_cfg.get("project", "runs/detect"))
     name    = train_cfg.get("name",            "conveyor_belt")
 
-    if not Path(data).exists():
+    if not data.exists():
         print(
             f"[ERROR] data.yaml not found at '{data}'.\n"
             "  Run: python scripts/prepare_dataset.py  first."
@@ -83,24 +120,28 @@ def main():
 
     model_obj = YOLO(model)
 
-    results = model_obj.train(
-        data=data,
-        epochs=epochs,
-        imgsz=imgsz,
-        batch=batch,
-        device=device if device else None,
-        optimizer=train_cfg.get("optimizer",      "AdamW"),
-        lr0=train_cfg.get("lr0",                  0.01),
-        lrf=train_cfg.get("lrf",                  0.01),
-        momentum=train_cfg.get("momentum",         0.937),
-        weight_decay=train_cfg.get("weight_decay", 0.0005),
-        warmup_epochs=train_cfg.get("warmup_epochs", 3.0),
-        close_mosaic=train_cfg.get("close_mosaic", 10),
-        project=project,
-        name=name,
-        exist_ok=True,
-        verbose=True,
-    )
+    training_data = build_training_data_yaml(data)
+    try:
+        results = model_obj.train(
+            data=str(training_data),
+            epochs=epochs,
+            imgsz=imgsz,
+            batch=batch,
+            device=device if device else None,
+            optimizer=train_cfg.get("optimizer",      "AdamW"),
+            lr0=train_cfg.get("lr0",                  0.01),
+            lrf=train_cfg.get("lrf",                  0.01),
+            momentum=train_cfg.get("momentum",         0.937),
+            weight_decay=train_cfg.get("weight_decay", 0.0005),
+            warmup_epochs=train_cfg.get("warmup_epochs", 3.0),
+            close_mosaic=train_cfg.get("close_mosaic", 10),
+            project=str(project),
+            name=name,
+            exist_ok=True,
+            verbose=True,
+        )
+    finally:
+        training_data.unlink(missing_ok=True)
 
     print(f"\n[TrainDetector] Training complete!")
     print(f"  Best weights : {results.save_dir}/weights/best.pt")

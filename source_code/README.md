@@ -108,6 +108,7 @@ python scripts/train_detector.py \
     --device 0
 ```
 
+> Training output is written under `source_code/runs/detect/conveyor_belt/`.
 > After training completes, move the best weights into `models/`:
 > ```bash
 > cp runs/detect/conveyor_belt/weights/best.pt models/detection/conveyor_best.pt

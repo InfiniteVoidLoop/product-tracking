@@ -1,4 +1,4 @@
-path: /home/bojack/Code/CV/product-tracking/source_code/data/conveyor_dataset
+path: data/conveyor_dataset
 train: train/images
 val: val/images
 test: test/images

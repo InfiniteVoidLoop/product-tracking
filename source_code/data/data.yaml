@@ -1,6 +1,7 @@
-path: /home/phuc/Documents/CV/source_code/data
+path: data
 train: train/images
 val: val/images
 test: test/images
 nc: 1
-names: ['product']
+names:
+- product
