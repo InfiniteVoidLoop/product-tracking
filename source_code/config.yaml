@@ -19,12 +19,12 @@ source:
 # Object Detection (YOLO)
 # ---------------------------------------------------------------------------
 detection:
-  model_path: "models/detection/conveyor_best.pt"  # Path to .pt, .onnx, or .engine
+  model_path: "runs/detect/conveyor_belt/weights/best.pt"  # Path to .pt, .onnx, or .engine
   imgsz: 640               # Inference image size
   conf_threshold: 0.35     # Minimum detection confidence
   iou_threshold: 0.45      # NMS IoU threshold
   device: ""               # "" = auto (cuda if available, else cpu), "cpu", "cuda:0"
-  classes: [0]             # [0] to strictly include only the desired product class IDs
+  classes: [0, 1, 2, 3, 4, 5] # track all defined classes
 
 # ---------------------------------------------------------------------------
 # Multi-Object Tracking (ByteTrack)
@@ -88,7 +88,7 @@ train:
   model: "yolov8s.pt"
   epochs: 150
   imgsz: 640
-  batch: 16
+  batch: 2
   device: ""
   optimizer: "AdamW"
   lr0: 0.01

@@ -1,7 +1,12 @@
-path: data
+path: /home/phuc/codespace/CV/source_code/data
 train: train/images
 val: val/images
 test: test/images
-nc: 1
+nc: 6
 names:
-- product
+- Blue Basket
+- Blue Panel
+- Brown Table
+- Brown Tray
+- Orange Cone
+- Part
