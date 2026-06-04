@@ -23,7 +23,7 @@ echo "========================================"
 # We override the batch size here (set to 8 or 16 depending on your GPU memory).
 # If you get a CUDA Out of Memory error, lower the --batch argument.
 python scripts/train_detector.py \
-  --data data/data.yaml \
+  --data data/detection/data.yaml \
   --epochs 20 \
   --batch 8
 

@@ -91,7 +91,7 @@ def draw_tracks(
 
         # Track ID + state label
         state = state_map.get(tid, ProductState.DISCOVERED)
-        label = f"ID:{tid} {state.name[:3]}"
+        label = f"ID:{tid} {track.class_name}"
         (tw, th), _ = cv2.getTextSize(label, _FONT_SM, 0.55, 1)
         cv2.rectangle(frame, (x1, y1 - th - 6), (x1 + tw + 4, y1), colour, -1)
         cv2.putText(frame, label, (x1 + 2, y1 - 4), _FONT_SM, 0.55, (0, 0, 0), 1, cv2.LINE_AA)

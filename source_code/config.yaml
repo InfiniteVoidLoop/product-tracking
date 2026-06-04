@@ -43,7 +43,7 @@ tracking:
 # Axis: use "x" for horizontal conveyor, "y" for vertical conveyor
 # ---------------------------------------------------------------------------
 counting:
-  axis: "y"                # "x" (horizontal) or "y" (vertical) conveyor direction
+  axis: "x"                # "x" (horizontal) or "y" (vertical) conveyor direction
   zone_start: 0.20         # Entry zone end / Tracking zone start (fraction along axis)
   zone_end: 0.80           # Tracking zone end / Exit zone start (fraction along axis)
   count_cache_size: 200    # Number of recently counted IDs to cache (anti-double-count)
@@ -84,7 +84,7 @@ app:
 # Training (YOLO)
 # ---------------------------------------------------------------------------
 train:
-  data_yaml: "data/data.yaml"
+  data_yaml: "data/detection/data.yaml"
   model: "yolov8s.pt"
   epochs: 150
   imgsz: 640

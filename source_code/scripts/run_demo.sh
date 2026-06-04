@@ -18,14 +18,14 @@ echo "==================================================="
 # If you just want it to process in the background and save the annotated output video
 # without popping up a window, we use the --headless flag:
 echo "Processing v1.mov in headless mode..."
-python app.py --source data/videos/v1.mov --headless
-mv data/output_annotated.mp4 data/v1_tracked_demo.mp4
+python app.py --source data/videos/v2.mov --headless
+mv data/output_annotated.mp4 data/v2_tracked_demo.mp4
 echo "Saved annotated output to data/v1_tracked_demo.mp4!"
 
 echo ""
 echo "Processing v2.mov in headless mode..."
-python app.py --source data/videos/v2.mov --headless
-mv data/output_annotated.mp4 data/v2_tracked_demo.mp4
+python app.py --source data/videos/v1.mov --headless
+mv data/output_annotated.mp4 data/v1_tracked_demo.mp4
 echo "Saved annotated output to data/v2_tracked_demo.mp4!"
 
 echo "==================================================="
